@@ -1,0 +1,91 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+androidExtensions {
+    experimental = true
+}
+
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        applicationId "com.example.quicknewsapp"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        renderscriptTargetApi 22
+        renderscriptSupportModeEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+}
+
+def androidx_room_version = "2.2.3"
+def androidx_appcompat_version = "1.1.0"
+def androidx_recycler_view_version = "1.1.0"
+def androidx_constraint_layout_version = "1.1.3"
+def androidx_swipe_refresh_version = "1.0.0"
+def androidx_preferences_version = "1.1.0"
+def androidx_core_version = "1.1.0"
+def androidx_test_version = "1.1.1"
+def androidx_test_espresso_version = "3.2.0"
+
+def rx_preferences_version = "2.0.0"
+def joda_time_version = "2.10.5"
+def timber_version = "4.7.1"
+def rx_android_version = "2.1.1"
+def rx_binding_version = "2.2.0"
+def retrofit_rxjava_version = "2.3.0"
+def retrofit_moshi_version = "2.3.0"
+def picasso_version = "2.71828"
+def moshi_version = "1.9.2"
+def flag_kit_version = "1.0"
+def junit_version = "4.12"
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api 'com.google.android.material:material:1.2.0-alpha02'
+
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
+    implementation "androidx.recyclerview:recyclerview:$androidx_recycler_view_version"
+    implementation "androidx.constraintlayout:constraintlayout:$androidx_constraint_layout_version"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$androidx_swipe_refresh_version"
+    implementation "androidx.preference:preference:$androidx_preferences_version"
+    implementation "androidx.room:room-runtime:$androidx_room_version"
+    kapt "androidx.room:room-compiler:$androidx_room_version"
+    implementation "androidx.core:core-ktx:$androidx_core_version"
+
+    implementation "com.f2prateek.rx.preferences2:rx-preferences:$rx_preferences_version"
+    implementation "joda-time:joda-time:$joda_time_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "com.jakewharton.timber:timber:$timber_version"
+//    implementation "io.reactivex.rxjava3:rxjava:3.0.0-RC5"
+
+    implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
+    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_rxjava_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_moshi_version"
+//    implementation "com.squareup.okhttp3:okhttp:4.2.2"
+    implementation "com.squareup.picasso:picasso:$picasso_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    implementation "com.jwang123.flagkit:flagkit:$flag_kit_version"
+
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test.ext:junit:$androidx_test_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso_version"
+}
+repositories {
+    mavenCentral()
+}

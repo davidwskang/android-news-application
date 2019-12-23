@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/side_navigation">
+        <item android:id="@+id/side_menu_settings"
+            android:icon="@drawable/ic_settings_black_35dp"
+            android:title="@string/side_nav_settings_title"
+            />
+        <item android:id="@+id/side_menu_about"
+            android:icon="@drawable/ic_info_outline_black_35dp"
+            android:title="@string/side_nav_about_title"
+            />
+    </group>
+</menu>
