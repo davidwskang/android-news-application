@@ -3,10 +3,12 @@ package com.example.quicknewsapp.util
 import android.content.Context
 import android.os.IBinder
 import android.util.TypedValue
-import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import kotlinx.android.synthetic.main.view_action_bar.view.*
+import androidx.room.Room
+import com.example.quicknewsapp.common.Constants
+import com.example.quicknewsapp.common.MainActivity
+import com.example.quicknewsapp.main_fragments.bookmarks.BookmarkedArticlesDao
+import com.example.quicknewsapp.main_fragments.bookmarks.BookmarkedArticlesDatabase
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import java.util.concurrent.TimeUnit
@@ -55,6 +57,13 @@ class AppUtils {
         fun convertDipToPx(context : Context, dips : Float) : Int {
             val metrics = context.resources.displayMetrics
             return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dips, metrics).toInt()
+        }
+
+        fun getBookmarksDao(activity : MainActivity) : BookmarkedArticlesDao {
+            return Room.databaseBuilder(activity.applicationContext,
+                    BookmarkedArticlesDatabase::class.java, Constants.SAVED_DB)
+                    .build()
+                    .savedArticlesDao()
         }
 
     }

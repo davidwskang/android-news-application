@@ -7,6 +7,7 @@ import com.example.quicknewsapp.common.AppFragment
 import com.example.quicknewsapp.R
 import com.example.quicknewsapp.api.LocationApi
 import com.example.quicknewsapp.api.RetrofitClient
+import com.example.quicknewsapp.models.LocationInformation
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -51,8 +52,13 @@ class SplashScreenFragment : AppFragment() {
                 .takeWhile {
                     it < 3 || (mainActivity!!.screenHeight == 0 && mainActivity!!.screenWidth == 0)
                 }
-                .doOnComplete { mainActivity!!.destroySplashScreen() }
+                .doOnComplete {
+                    mainActivity!!.location = LocationInformation("ok", "Canada", "ca")
+                    mainActivity!!.destroySplashScreen()
+                }
+                .doOnError{ Timber.e(it)}
                 .subscribe()
+
         compositeDisposable.add(s)
     }
 

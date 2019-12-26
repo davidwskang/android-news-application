@@ -12,7 +12,8 @@ import com.example.quicknewsapp.main_fragments.feed.FeedAdapter.OnFeedItemClicke
 import com.example.quicknewsapp.main_fragments.preview.PreviewFragment
 import com.example.quicknewsapp.models.Article
 import com.example.quicknewsapp.models.Feed
-import com.example.quicknewsapp.secondary_fragments.ConfirmationFragment
+import com.example.quicknewsapp.secondary_fragments.BookmarkConfirmFragment
+import com.example.quicknewsapp.secondary_fragments.OpenArticleConfirmFragment
 import com.example.quicknewsapp.util.AppUtils
 import io.reactivex.Single
 import io.reactivex.SingleObserver
@@ -44,6 +45,10 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
         const val CATEGORY_KEY = "category_key"
     }
 
+    abstract fun getFeedObservable(page: Int): Single<Feed>
+
+    abstract fun unpackBundle()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -57,13 +62,17 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
     override fun onFeedItemClicked(article: Article) {
         mainActivity!!.supportFragmentManager
                 .beginTransaction()
-                .add(R.id.full_screen_fragment_container, ConfirmationFragment.newInstance(article))
+                .add(R.id.full_screen_fragment_container, OpenArticleConfirmFragment.newInstance(article))
                 .commit()
     }
 
-    abstract fun getFeedObservable(page: Int): Single<Feed>
-
-    abstract fun unpackBundle()
+    override fun onFeedItemLongPress(article: Article) {
+        Timber.e("is booked : ${article.isBookmarked}")
+        mainActivity!!.supportFragmentManager
+                .beginTransaction()
+                .add(R.id.full_screen_fragment_container, BookmarkConfirmFragment.newInstance(article))
+                .commit()
+    }
 
     private fun initRecyclerView() {
         val imageHeight = AppUtils.convertDipToPx(context!!, 240f)
@@ -194,7 +203,7 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
                 FeedCallType.REFRESH -> {
                     feedAdapter!!.setFeedArticles(articles)
                     feedAdapter!!.loadingItemVisible = true
-                    this.swipe_refresh_layout.isRefreshing = false
+                    swipe_refresh_layout.isRefreshing = false
                 }
                 FeedCallType.PAGINATION -> {
                     feedAdapter!!.addArticles(articles)
