@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,7 +29,6 @@
         app:layout_constraintBottom_toTopOf="@id/confirmation_title"
         android:paddingBottom="8dp"
         android:paddingTop="12dp"
-        android:text="Would you like to open this article?"
         android:textSize="14sp"
         android:textColor="@color/light_black"
         />
@@ -43,33 +44,62 @@
         android:gravity="center"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:text="The last solar eclipse of the year is Christmas evening. Here's how to watch - CNN"
         android:textSize="18sp"
         android:textColor="@color/black"
         />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancel_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/guideline_v08"
+        app:layout_constraintEnd_toEndOf="@id/guideline_v50"
         app:layout_constraintTop_toBottomOf="@id/confirmation_title"
         android:layout_marginStart="8dp"
-        android:text="Cancel"
+        android:layout_marginTop="16dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:background="?android:attr/selectableItemBackground"
+        android:backgroundTint="@color/white"
         android:textSize="12sp"
         android:textColor="@color/black"
         />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirm_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/guideline_v50"
         app:layout_constraintEnd_toEndOf="@id/modal_background"
         app:layout_constraintTop_toBottomOf="@id/confirmation_title"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:background="?android:attr/selectableItemBackground"
+        android:backgroundTint="@color/white"
         android:textSize="12sp"
         android:text="Open link"
         android:textColor="@color/black"
+        />
+
+    <View
+        android:id="@+id/horizontal_divider_line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintStart_toStartOf="@id/modal_background"
+        app:layout_constraintEnd_toEndOf="@id/modal_background"
+        app:layout_constraintBottom_toTopOf="@id/cancel_button"
+        android:background="@color/grey"
+        />
+
+    <View
+        android:id="@+id/vertical_divider_line"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/horizontal_divider_line"
+        app:layout_constraintBottom_toBottomOf="@id/modal_background"
+        app:layout_constraintStart_toStartOf="@id/guideline_v50"
+        app:layout_constraintEnd_toEndOf="@id/guideline_v50"
+        android:background="@color/grey"
         />
 
     <androidx.constraintlayout.widget.Guideline
@@ -78,6 +108,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.08"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_v50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50"
         />
 
     <androidx.constraintlayout.widget.Guideline

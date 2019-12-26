@@ -36,4 +36,19 @@
     <string name="about_description">Hello, thank you for downloading this app.</string>
     <string name="about_google_link">Powered by Google News API</string>
 
+    <!-- Confirmation Dialog -->
+    <string name="confirmation_cancel_button_text">Cancel</string>
+
+    <!-- Confirmation Open Article -->
+    <string name="confirmation_open_label">Would you like to open this article?</string>
+    <string name="confirmation_open_button_text">Open link</string>
+
+    <!-- Confirmation Bookmark Article -->
+    <string name="confirmation_bookmark_label">Would you like to bookmark this article?</string>
+    <string name="confirmation_bookmark_button_text">Bookmark</string>
+
+    <!-- Confirmation Bookmark Article -->
+    <string name="confirmation_unbookmark_label">Would you like to remove this article from your bookmarks?</string>
+    <string name="confirmation_unbookmark_button_text">Remove</string>
+
 </resources>

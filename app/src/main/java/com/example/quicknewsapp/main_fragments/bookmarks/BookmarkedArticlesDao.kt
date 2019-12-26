@@ -20,4 +20,10 @@ interface BookmarkedArticlesDao {
     @Delete
     fun delete(article : Article)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertArticle(article: Article) : Completable
+
+    @Delete
+    fun deleteArticle(article: Article) : Completable
+
 }

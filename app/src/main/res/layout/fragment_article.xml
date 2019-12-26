@@ -70,16 +70,22 @@
         android:visibility="invisible"
         />
 
-    <ProgressBar
-        android:id="@+id/article_progress_bar"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_height="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/action_bar_app"
-        android:indeterminate="true"
-        android:background="@color/light_grey"
-        />
+        app:layout_constraintBottom_toBottomOf="@id/action_bar_app">
+
+        <ProgressBar
+            android:id="@+id/article_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:background="@color/light_grey" />
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

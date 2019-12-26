@@ -44,8 +44,8 @@ class ArticleFragment : AppFragment() {
             web_view.webViewClient = object : WebViewClient(){
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
-                    web_view.visibility = View.VISIBLE
-                    article_progress_bar.visibility = View.GONE
+                    view?.visibility = View.VISIBLE
+                    article_progress_bar?.visibility = View.GONE
                 }
             }
         }

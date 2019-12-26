@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
+import org.joda.time.DateTime
 
 @Parcelize
 @Entity
@@ -53,4 +54,15 @@ data class Article(
         @Json(name = "isBookmarked") // does not come from NewsAPI
         var isBookmarked : Boolean = false
 
-) : Parcelable
+) : Parcelable {
+
+        fun prepareForInsert() {
+                bookmarkedDate = DateTime.now().millis
+                isBookmarked = true
+        }
+
+        fun prepareForDelete() {
+                bookmarkedDate = 0L
+                isBookmarked = false
+        }
+}

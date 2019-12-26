@@ -90,6 +90,7 @@ class FeedAdapter(var listener: OnFeedItemClickedListener,
     }
 
     internal inner class RegularFeedViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+
         fun bind(article : Article) {
             itemView.run {
                 article_date.text = article.publishedDate
@@ -102,17 +103,24 @@ class FeedAdapter(var listener: OnFeedItemClickedListener,
                 article_source.text = article.source?.name
                 article_title.text = article.title
 
-                RxView.clicks(itemView)
+                RxView.clicks(this)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { listener.onFeedItemClicked(article) }
+
+                RxView.longClicks(this)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { listener.onFeedItemLongPress(article) }
             }
         }
     }
 
-    internal inner class LoadingViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView)
+    internal inner class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     interface OnFeedItemClickedListener {
+
         fun onFeedItemClicked(article: Article)
+
+        fun onFeedItemLongPress(article: Article)
     }
 
 }

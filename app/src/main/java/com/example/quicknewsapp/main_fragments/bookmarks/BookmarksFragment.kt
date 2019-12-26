@@ -57,6 +57,10 @@ class BookmarksFragment : AppMainFragment() , FeedAdapter.OnFeedItemClickedListe
                 .commit()
     }
 
+    override fun onFeedItemLongPress(article: Article) {
+        Timber.e("item was long pressed")
+    }
+
     fun loadBookmarkedArticles() {
         val observable = object : Single<ArrayList<Article>>() {
             override fun subscribeActual(observer: SingleObserver<in ArrayList<Article>>) {
