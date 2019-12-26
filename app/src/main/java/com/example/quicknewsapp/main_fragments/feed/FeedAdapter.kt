@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.quicknewsapp.R
 import com.example.quicknewsapp.models.Article
 import com.example.quicknewsapp.util.AppUtils
+import com.jakewharton.rxbinding2.view.RxView
 import com.squareup.picasso.Picasso
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.item_feed_block.view.*
 import kotlinx.android.synthetic.main.item_feed_regular.view.*
 
@@ -99,6 +101,10 @@ class FeedAdapter(var listener: OnFeedItemClickedListener,
                         .into(article_image)
                 article_source.text = article.source?.name
                 article_title.text = article.title
+
+                RxView.clicks(itemView)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { listener.onFeedItemClicked(article) }
             }
         }
     }

@@ -7,11 +7,12 @@ import androidx.room.Room
 import com.example.quicknewsapp.R
 import com.example.quicknewsapp.common.AppFragment
 import com.example.quicknewsapp.common.Constants
-import com.example.quicknewsapp.models.Article
-import com.example.quicknewsapp.models.Feed
 import com.example.quicknewsapp.main_fragments.bookmarks.BookmarkedArticlesDatabase
 import com.example.quicknewsapp.main_fragments.feed.FeedAdapter.OnFeedItemClickedListener
 import com.example.quicknewsapp.main_fragments.preview.PreviewFragment
+import com.example.quicknewsapp.models.Article
+import com.example.quicknewsapp.models.Feed
+import com.example.quicknewsapp.secondary_fragments.ConfirmationFragment
 import com.example.quicknewsapp.util.AppUtils
 import io.reactivex.Single
 import io.reactivex.SingleObserver
@@ -46,22 +47,23 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initBundleValues()
+        unpackBundle()
 
         initRecyclerView()
-
-        swipe_refresh_layout.setOnRefreshListener { getFeed(FeedCallType.REFRESH) }
 
         getFeed(FeedCallType.INITIALIZE)
     }
 
     override fun onFeedItemClicked(article: Article) {
-        checkIfSaved(article)
+        mainActivity!!.supportFragmentManager
+                .beginTransaction()
+                .add(R.id.full_screen_fragment_container, ConfirmationFragment.newInstance(article))
+                .commit()
     }
 
-    abstract fun getFeedObservable(page : Int) : Single<Feed>
+    abstract fun getFeedObservable(page: Int): Single<Feed>
 
-    abstract fun initBundleValues()
+    abstract fun unpackBundle()
 
     private fun initRecyclerView() {
         val imageHeight = AppUtils.convertDipToPx(context!!, 240f)
@@ -101,7 +103,7 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
                         Consumer {
                             calling = false
                             Timber.e(it)
-                })
+                        })
 
         compositeDisposable.add(disposable)
     }
@@ -114,7 +116,7 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
                 .commit()
     }
 
-    private fun checkIfSaved(article: Article) {
+    private fun checkIfSavedAndShow(article: Article) {
         val observable = object : Single<Article>() {
             override fun subscribeActual(observer: SingleObserver<in Article>) {
                 try {
