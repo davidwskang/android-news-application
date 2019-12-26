@@ -7,10 +7,12 @@ import com.example.quicknewsapp.R
 import com.example.quicknewsapp.secondary_fragments.about.AboutFragment
 import com.example.quicknewsapp.main_fragments.AppMainFragment
 import com.example.quicknewsapp.main_fragments.bookmarks.BookmarksFragment
+import com.example.quicknewsapp.secondary_fragments.ArticleFragment
 import com.example.quicknewsapp.main_fragments.headlines.HeadlinesFragment
 import com.example.quicknewsapp.models.LocationInformation
 import com.example.quicknewsapp.models.Source
 import com.example.quicknewsapp.main_fragments.search.view.SearchFragment
+import com.example.quicknewsapp.models.Article
 import com.example.quicknewsapp.secondary_fragments.settings.SettingsFragment
 import com.example.quicknewsapp.secondary_fragments.splash.SplashScreenFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -91,6 +93,26 @@ class MainActivity : AppCompatActivity(),
 
     fun getAppBar() : AppActionBar = action_bar
 
+    fun onLocationReceived(location : LocationInformation) {
+        countryCode = location.countryCode
+        this.location = location
+    }
+
+    fun destroySplashScreen() {
+        supportFragmentManager.beginTransaction()
+                .remove(splashFragment)
+                .show(headlinesFragment)
+                .commit()
+    }
+
+    fun onGoToArticleConfirmed(article : Article) {
+        supportFragmentManager
+                .beginTransaction()
+                .setCustomAnimations(R.anim.anim_in_bot_to_top, R.anim.anim_out_top_to_bot)
+                .add(R.id.full_screen_fragment_container, ArticleFragment.newInstance(article))
+                .commit()
+    }
+
     private fun getBottomDrawerListener() : BottomDrawerMenuContainer.BottomDrawerMenuItemSelectedListener {
         return object : BottomDrawerMenuContainer.BottomDrawerMenuItemSelectedListener {
             override fun onBottomDrawerMenuItemSelected(position: Int) {
@@ -132,22 +154,6 @@ class MainActivity : AppCompatActivity(),
             currFragment = nextFrag
             true
         }
-    }
-
-    fun onLocationReceived(location : LocationInformation) {
-        countryCode = location.countryCode
-        this.location = location
-    }
-
-    fun onSourcesReceived(sources : HashSet<Source>) {
-        this.sources.addAll(sources)
-    }
-
-    fun destroySplashScreen() {
-        supportFragmentManager.beginTransaction()
-                .remove(splashFragment)
-                .show(headlinesFragment)
-                .commit()
     }
 
 }

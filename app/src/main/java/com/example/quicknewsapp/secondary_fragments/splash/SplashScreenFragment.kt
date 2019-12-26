@@ -7,10 +7,12 @@ import com.example.quicknewsapp.common.AppFragment
 import com.example.quicknewsapp.R
 import com.example.quicknewsapp.api.LocationApi
 import com.example.quicknewsapp.api.RetrofitClient
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_splash.*
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 /***
  * This fragment allows the app to initialize required data.
@@ -43,7 +45,15 @@ class SplashScreenFragment : AppFragment() {
             mainActivity!!.screenWidth = heightPixels
             mainActivity!!.screenHeight = widthPixels
         }
-        getUserLocation()
+        // getUserLocation()
+
+        val s = Observable.interval(1, TimeUnit.SECONDS)
+                .takeWhile {
+                    it < 3 || (mainActivity!!.screenHeight == 0 && mainActivity!!.screenWidth == 0)
+                }
+                .doOnComplete { mainActivity!!.destroySplashScreen() }
+                .subscribe()
+        compositeDisposable.add(s)
     }
 
     private fun getUserLocation() {

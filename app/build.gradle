@@ -62,8 +62,10 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$androidx_constraint_layout_version"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$androidx_swipe_refresh_version"
     implementation "androidx.preference:preference:$androidx_preferences_version"
+
     implementation "androidx.room:room-runtime:$androidx_room_version"
     kapt "androidx.room:room-compiler:$androidx_room_version"
+    implementation "androidx.room:room-rxjava2:$androidx_room_version"
     implementation "androidx.core:core-ktx:$androidx_core_version"
 
     implementation "com.f2prateek.rx.preferences2:rx-preferences:$rx_preferences_version"

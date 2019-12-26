@@ -24,7 +24,7 @@ class HeadlinesFeedFragment : FeedFragment() {
         }
     }
 
-    override fun initBundleValues() {
+    override fun unpackBundle() {
         arguments?.run {
             countryCode = getString(COUNTRY_CODE_KEY)!!
             category = getString(CATEGORY_KEY)!!

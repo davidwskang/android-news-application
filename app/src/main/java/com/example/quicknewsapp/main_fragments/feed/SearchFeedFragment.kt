@@ -32,7 +32,7 @@ class SearchFeedFragment : FeedFragment() {
                         page = page)
     }
 
-    override fun initBundleValues() {
+    override fun unpackBundle() {
         arguments?.run {
             searchTerm = getString(SEARCH_TERM_KEY)!!
             apiKey = getString(API_KEY_KEY)!!
