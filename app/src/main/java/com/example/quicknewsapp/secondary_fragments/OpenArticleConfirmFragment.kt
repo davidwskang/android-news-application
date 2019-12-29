@@ -6,9 +6,9 @@ import com.example.quicknewsapp.models.Article
 
 class OpenArticleConfirmFragment : ConfirmFragment() {
 
-    override val confirmLabelStringId = R.string.confirmation_open_label
+    override var confirmLabelStringId = R.string.confirmation_open_label
 
-    override val confirmButtonStringId = R.string.confirmation_open_button_text
+    override var confirmButtonStringId = R.string.confirmation_open_button_text
 
     companion object {
         fun newInstance(article: Article): ConfirmFragment {

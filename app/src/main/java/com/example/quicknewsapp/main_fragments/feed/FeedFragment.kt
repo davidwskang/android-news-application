@@ -32,7 +32,7 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
     lateinit var apiKey: String
 
     lateinit var feedAdapter: FeedAdapter
-    lateinit var viewModel : BookmarkedArticlesViewModel
+    lateinit var viewModel: BookmarkedArticlesViewModel
 
     enum class FeedCallType {
         INITIALIZE, REFRESH, PAGINATION
@@ -84,10 +84,6 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
 
     override fun onFeedItemLongPress(article: Article) {
         mainActivity!!.showConfirmModal(BookmarkConfirmFragment.newInstance(article))
-//        mainActivity!!.supportFragmentManager
-//                .beginTransaction()
-//                .add(R.id.full_screen_fragment_container, BookmarkConfirmFragment.newInstance(article))
-//                .commit()
     }
 
     private fun initRecyclerView() {

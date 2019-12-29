@@ -6,13 +6,11 @@ import com.example.quicknewsapp.main_fragments.bookmarks.BookmarkedArticlesDao
 import com.example.quicknewsapp.main_fragments.bookmarks.BookmarkedArticlesDatabase
 import com.example.quicknewsapp.models.Article
 import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class Repository(application: Application) {
 
-    var bookmarkedArticleDao : BookmarkedArticlesDao
-    var bookmarkedArticles : LiveData<List<Article>>
+    var bookmarkedArticleDao: BookmarkedArticlesDao
+    var bookmarkedArticles: LiveData<List<Article>>
 
     init {
         val db = BookmarkedArticlesDatabase.getInstance(application)
@@ -20,16 +18,20 @@ class Repository(application: Application) {
         bookmarkedArticles = bookmarkedArticleDao.getAllArticles()
     }
 
-    fun insert(article : Article) : Completable {
+    fun insert(article: Article): Completable {
         return bookmarkedArticleDao.insertArticle(article)
     }
 
-    fun delete(article : Article) : Completable {
+    fun delete(article: Article): Completable {
         return bookmarkedArticleDao.deleteArticle(article)
     }
 
-    fun getAll() : LiveData<List<Article>> {
+    fun getAll(): LiveData<List<Article>> {
         return bookmarkedArticles
+    }
+
+    fun getArticleByTitle(title: String): LiveData<Article?> {
+        return bookmarkedArticleDao.getArticleByTitle(title);
     }
 
 }
