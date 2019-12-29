@@ -12,12 +12,14 @@ import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.item_feed_block.view.*
 import kotlinx.android.synthetic.main.item_feed_regular.view.*
+import timber.log.Timber
 
 class FeedAdapter(var listener: OnFeedItemClickedListener,
                   var imageHeight: Int,
                   var imageWidth: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var articles = ArrayList<Article>()
+    private var bookmarkedArticles = HashSet<Article>()
 
     var loadingItemVisible: Boolean = true
         set(visible) {
@@ -74,19 +76,10 @@ class FeedAdapter(var listener: OnFeedItemClickedListener,
         notifyDataSetChanged()
     }
 
-    internal inner class BlockFeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(article: Article) {
-            itemView.run {
-                Picasso.get()
-                        .load(article.imageUrl)
-                        .resize(imageWidth, imageHeight)
-                        .centerCrop()
-                        .into(image)
-                title.text = article.title
-                source_name.text = article.source?.name
-                setOnClickListener { listener.onFeedItemClicked(article) }
-            }
-        }
+    fun setBookmarkedArticles(bookmarked : List<Article>) {
+        bookmarkedArticles.clear()
+        bookmarkedArticles.addAll(bookmarked)
+        notifyDataSetChanged()
     }
 
     internal inner class RegularFeedViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -102,6 +95,12 @@ class FeedAdapter(var listener: OnFeedItemClickedListener,
                         .into(article_image)
                 article_source.text = article.source?.name
                 article_title.text = article.title
+
+                if (bookmarkedArticles.contains(article)) {
+                    bookmarked_status.setImageResource(R.drawable.ic_bookmark_black_35dp)
+                } else {
+                    bookmarked_status.setImageResource(R.drawable.ic_bookmark_border_black_35dp)
+                }
 
                 RxView.clicks(this)
                         .observeOn(AndroidSchedulers.mainThread())

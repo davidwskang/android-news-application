@@ -3,10 +3,10 @@ package com.example.quicknewsapp.secondary_fragments.splash
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
-import com.example.quicknewsapp.common.AppFragment
 import com.example.quicknewsapp.R
 import com.example.quicknewsapp.api.LocationApi
 import com.example.quicknewsapp.api.RetrofitClient
+import com.example.quicknewsapp.common.AppFragment
 import com.example.quicknewsapp.models.LocationInformation
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -46,19 +46,19 @@ class SplashScreenFragment : AppFragment() {
             mainActivity!!.screenWidth = heightPixels
             mainActivity!!.screenHeight = widthPixels
         }
-        // getUserLocation()
+        mainActivity!!.location = LocationInformation("ok", "Canada", "ca")
 
         val s = Observable.interval(1, TimeUnit.SECONDS)
-                .takeWhile {
-                    it < 3 || (mainActivity!!.screenHeight == 0 && mainActivity!!.screenWidth == 0)
+                .takeUntil {
+                    it > 3 && isAllLoaded()
                 }
                 .doOnComplete {
-                    mainActivity!!.location = LocationInformation("ok", "Canada", "ca")
                     mainActivity!!.destroySplashScreen()
                 }
-                .doOnError{ Timber.e(it)}
+                .doOnError{
+                    Timber.e(it)
+                }
                 .subscribe()
-
         compositeDisposable.add(s)
     }
 
@@ -79,5 +79,7 @@ class SplashScreenFragment : AppFragment() {
         compositeDisposable.add(observer)
     }
 
-    private fun isAllLoaded() = locationReceived
+    private fun isAllLoaded() = mainActivity!!.location != null
+                && mainActivity!!.screenHeight != 0
+                && mainActivity!!.screenWidth != 0
 }

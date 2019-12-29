@@ -63,7 +63,7 @@ class AppUtils {
             return Room.databaseBuilder(activity.applicationContext,
                     BookmarkedArticlesDatabase::class.java, Constants.SAVED_DB)
                     .build()
-                    .savedArticlesDao()
+                    .bookmarkedArticlesDao()
         }
 
     }

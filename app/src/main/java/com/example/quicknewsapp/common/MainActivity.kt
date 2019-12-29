@@ -13,6 +13,8 @@ import com.example.quicknewsapp.models.LocationInformation
 import com.example.quicknewsapp.models.Source
 import com.example.quicknewsapp.main_fragments.search.view.SearchFragment
 import com.example.quicknewsapp.models.Article
+import com.example.quicknewsapp.secondary_fragments.BookmarkConfirmFragment
+import com.example.quicknewsapp.secondary_fragments.ConfirmFragment
 import com.example.quicknewsapp.secondary_fragments.settings.SettingsFragment
 import com.example.quicknewsapp.secondary_fragments.splash.SplashScreenFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -113,6 +115,13 @@ class MainActivity : AppCompatActivity(),
                 .commit()
     }
 
+    fun showConfirmModal(confirmFrag : ConfirmFragment) {
+        supportFragmentManager
+                .beginTransaction()
+                .add(R.id.full_screen_fragment_container, confirmFrag)
+                .commit()
+    }
+
     private fun getBottomDrawerListener() : BottomDrawerMenuContainer.BottomDrawerMenuItemSelectedListener {
         return object : BottomDrawerMenuContainer.BottomDrawerMenuItemSelectedListener {
             override fun onBottomDrawerMenuItemSelected(position: Int) {
@@ -140,7 +149,6 @@ class MainActivity : AppCompatActivity(),
                 R.id.bottom_menu_search -> searchFragment
                 R.id.bottom_menu_headlines -> headlinesFragment
                 else /* R.id.bottom_menu_bookmarks */   -> {
-                    bookmarksFragment.loadBookmarkedArticles()
                     bookmarksFragment
                 }
             }
