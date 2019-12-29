@@ -40,6 +40,7 @@ def androidx_preferences_version = "1.1.0"
 def androidx_core_version = "1.1.0"
 def androidx_test_version = "1.1.1"
 def androidx_test_espresso_version = "3.2.0"
+def lifecycle_version = "2.1.0"
 
 def rx_preferences_version = "2.0.0"
 def joda_time_version = "2.10.5"
@@ -62,27 +63,29 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$androidx_constraint_layout_version"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$androidx_swipe_refresh_version"
     implementation "androidx.preference:preference:$androidx_preferences_version"
+    implementation "androidx.core:core-ktx:$androidx_core_version"
 
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     implementation "androidx.room:room-runtime:$androidx_room_version"
     kapt "androidx.room:room-compiler:$androidx_room_version"
     implementation "androidx.room:room-rxjava2:$androidx_room_version"
-    implementation "androidx.core:core-ktx:$androidx_core_version"
 
     implementation "com.f2prateek.rx.preferences2:rx-preferences:$rx_preferences_version"
     implementation "joda-time:joda-time:$joda_time_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "com.jakewharton.timber:timber:$timber_version"
-//    implementation "io.reactivex.rxjava3:rxjava:3.0.0-RC5"
-
     implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version"
+
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_rxjava_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_moshi_version"
-//    implementation "com.squareup.okhttp3:okhttp:4.2.2"
-    implementation "com.squareup.picasso:picasso:$picasso_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    implementation "com.squareup.picasso:picasso:$picasso_version"
     implementation "com.jwang123.flagkit:flagkit:$flag_kit_version"
+
+    implementation "com.jakewharton.timber:timber:$timber_version"
 
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$androidx_test_version"

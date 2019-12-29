@@ -1,15 +1,21 @@
 package com.example.quicknewsapp.main_fragments.bookmarks
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.example.quicknewsapp.BookmarkedArticlesViewModel
 import com.example.quicknewsapp.main_fragments.AppMainFragment
 import com.example.quicknewsapp.common.Constants
 import com.example.quicknewsapp.R
 import com.example.quicknewsapp.main_fragments.feed.FeedAdapter
 import com.example.quicknewsapp.models.Article
 import com.example.quicknewsapp.main_fragments.preview.PreviewFragment
+import com.example.quicknewsapp.util.AppUtils
 import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,6 +31,8 @@ class BookmarksFragment : AppMainFragment() , FeedAdapter.OnFeedItemClickedListe
     override val actionBarIconId            = R.drawable.ic_bookmark_border_black_35dp
     override val actionBarSearchVisibility  = View.GONE
 
+    lateinit var viewModel : BookmarkedArticlesViewModel
+
     lateinit var feedAdapter : FeedAdapter
 
     companion object {
@@ -34,6 +42,19 @@ class BookmarksFragment : AppMainFragment() , FeedAdapter.OnFeedItemClickedListe
             fragment.arguments = args
             return fragment
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(BookmarkedArticlesViewModel::class.java)
+        viewModel.getAll().observe(
+                this,
+                Observer<List<Article>> {
+                    feedAdapter.setFeedArticles(it as ArrayList<Article>)
+                    feedAdapter.setBookmarkedArticles(it)
+                    updateView()
+                })
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +67,13 @@ class BookmarksFragment : AppMainFragment() , FeedAdapter.OnFeedItemClickedListe
         feedAdapter.loadingItemVisible = false
         bookmarked_articles_list.adapter = feedAdapter
         bookmarked_articles_list.layoutManager = LinearLayoutManager(context)
-        loadBookmarkedArticles()
+
+//        AppUtils.getBookmarksDao(mainActivity!!).getAllArticles().observe(
+//                this, Observer<List<Article>> {
+//            feedAdapter.setFeedArticles(it as ArrayList<Article>)
+//            feedAdapter.setBookmarkedArticles(it)
+//            updateView()
+//        })
     }
 
     override fun onFeedItemClicked(article: Article) {
@@ -59,30 +86,6 @@ class BookmarksFragment : AppMainFragment() , FeedAdapter.OnFeedItemClickedListe
 
     override fun onFeedItemLongPress(article: Article) {
         Timber.e("item was long pressed")
-    }
-
-    fun loadBookmarkedArticles() {
-        val observable = object : Single<ArrayList<Article>>() {
-            override fun subscribeActual(observer: SingleObserver<in ArrayList<Article>>) {
-                try {
-                    val db = Room.databaseBuilder(activity!!.applicationContext,
-                            BookmarkedArticlesDatabase::class.java, Constants.SAVED_DB).build()
-                    val savedArticles = db.savedArticlesDao().getAll() as ArrayList
-                    observer.onSuccess(savedArticles)
-                } catch (e : Exception) {
-                    observer.onError(e)
-                }
-            }
-        }
-        val observer = observable.observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.computation())
-                .subscribe({
-                    feedAdapter.setFeedArticles(it)
-                    updateView()
-                }, {
-                    Timber.e(it)
-                })
-        compositeDisposable.add(observer)
     }
 
     private fun updateView() {

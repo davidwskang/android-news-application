@@ -2,21 +2,19 @@ package com.example.quicknewsapp.main_fragments.feed
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
+import com.example.quicknewsapp.BookmarkedArticlesViewModel
 import com.example.quicknewsapp.R
 import com.example.quicknewsapp.common.AppFragment
-import com.example.quicknewsapp.common.Constants
-import com.example.quicknewsapp.main_fragments.bookmarks.BookmarkedArticlesDatabase
 import com.example.quicknewsapp.main_fragments.feed.FeedAdapter.OnFeedItemClickedListener
-import com.example.quicknewsapp.main_fragments.preview.PreviewFragment
 import com.example.quicknewsapp.models.Article
 import com.example.quicknewsapp.models.Feed
 import com.example.quicknewsapp.secondary_fragments.BookmarkConfirmFragment
 import com.example.quicknewsapp.secondary_fragments.OpenArticleConfirmFragment
 import com.example.quicknewsapp.util.AppUtils
 import io.reactivex.Single
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
@@ -32,7 +30,9 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
     var calling: Boolean = false
     var page: Int = 1
     lateinit var apiKey: String
-    var feedAdapter: FeedAdapter? = null
+
+    lateinit var feedAdapter: FeedAdapter
+    lateinit var viewModel : BookmarkedArticlesViewModel
 
     enum class FeedCallType {
         INITIALIZE, REFRESH, PAGINATION
@@ -49,6 +49,17 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
 
     abstract fun unpackBundle()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this)
+                .get(BookmarkedArticlesViewModel::class.java)
+        viewModel.getAll().observe(
+                this,
+                Observer<List<Article>> {
+                    feedAdapter.setBookmarkedArticles(it)
+                })
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -59,6 +70,11 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
         getFeed(FeedCallType.INITIALIZE)
     }
 
+    override fun onResume() {
+        super.onResume()
+        Timber.e("onResume()")
+    }
+
     override fun onFeedItemClicked(article: Article) {
         mainActivity!!.supportFragmentManager
                 .beginTransaction()
@@ -67,11 +83,11 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
     }
 
     override fun onFeedItemLongPress(article: Article) {
-        Timber.e("is booked : ${article.isBookmarked}")
-        mainActivity!!.supportFragmentManager
-                .beginTransaction()
-                .add(R.id.full_screen_fragment_container, BookmarkConfirmFragment.newInstance(article))
-                .commit()
+        mainActivity!!.showConfirmModal(BookmarkConfirmFragment.newInstance(article))
+//        mainActivity!!.supportFragmentManager
+//                .beginTransaction()
+//                .add(R.id.full_screen_fragment_container, BookmarkConfirmFragment.newInstance(article))
+//                .commit()
     }
 
     private fun initRecyclerView() {
@@ -85,8 +101,8 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
             layoutManager = object : LinearLayoutManager(context) {
                 override fun onScrollStateChanged(state: Int) {
                     super.onScrollStateChanged(state)
-                    if (findLastVisibleItemPosition() == feedAdapter?.itemCount?.minus(1)
-                            && feedAdapter!!.loadingItemVisible) {
+                    if (findLastVisibleItemPosition() == feedAdapter.itemCount.minus(1)
+                            && feedAdapter.loadingItemVisible) {
                         getFeed(FeedCallType.PAGINATION)
                     }
                 }
@@ -115,42 +131,6 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
                         })
 
         compositeDisposable.add(disposable)
-    }
-
-    private fun showPreviewFragment(article: Article) {
-        mainActivity!!.supportFragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.anim_in_bot_to_top, R.anim.anim_out_top_to_bot)
-                .add(R.id.full_screen_fragment_container, PreviewFragment.newInstance(article))
-                .commit()
-    }
-
-    private fun checkIfSavedAndShow(article: Article) {
-        val observable = object : Single<Article>() {
-            override fun subscribeActual(observer: SingleObserver<in Article>) {
-                try {
-                    val db = Room.databaseBuilder(activity!!.applicationContext,
-                            BookmarkedArticlesDatabase::class.java, Constants.SAVED_DB).build()
-                    val savedArticle = db.savedArticlesDao().getArticleByTitle(article.title)
-                    if (savedArticle == null) {
-                        observer.onSuccess(article)
-                    } else {
-                        observer.onSuccess(savedArticle)
-                    }
-                } catch (e: Exception) {
-                    observer.onError(e)
-                }
-            }
-        }
-        val observer = observable.observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.computation())
-                .subscribe({
-                    showPreviewFragment(it)
-                }, {
-                    Timber.e(it)
-                })
-
-        compositeDisposable.add(observer)
     }
 
     private fun cleanArticles(): Function<Feed, Feed> {
@@ -197,18 +177,18 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
             val articles = ArrayList<Article>(it.articles)
             when (feedCallType) {
                 FeedCallType.INITIALIZE -> {
-                    feedAdapter!!.setFeedArticles(articles)
-                    feedAdapter!!.loadingItemVisible = true
+                    feedAdapter.setFeedArticles(articles)
+                    feedAdapter.loadingItemVisible = true
                 }
                 FeedCallType.REFRESH -> {
-                    feedAdapter!!.setFeedArticles(articles)
-                    feedAdapter!!.loadingItemVisible = true
+                    feedAdapter.setFeedArticles(articles)
+                    feedAdapter.loadingItemVisible = true
                     swipe_refresh_layout.isRefreshing = false
                 }
                 FeedCallType.PAGINATION -> {
-                    feedAdapter!!.addArticles(articles)
+                    feedAdapter.addArticles(articles)
                     if (articles.isEmpty()) {
-                        feedAdapter!!.loadingItemVisible = false
+                        feedAdapter.loadingItemVisible = false
                     }
                 }
             }

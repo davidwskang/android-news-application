@@ -5,12 +5,7 @@ import android.view.View
 import com.example.quicknewsapp.R
 import com.example.quicknewsapp.common.AppFragment
 import com.example.quicknewsapp.models.Article
-import com.jakewharton.rxbinding2.view.RxView
-import io.reactivex.*
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Function
 import kotlinx.android.synthetic.main.fragment_confirm.*
-import timber.log.Timber
 
 abstract class ConfirmFragment : AppFragment() {
 
@@ -49,33 +44,21 @@ abstract class ConfirmFragment : AppFragment() {
     }
 
     private fun initButtons() {
-        val confirmButton = RxView.clicks(confirm_button)
-                .observeOn(AndroidSchedulers.mainThread())
-                .switchMapCompletable(onConfirmCompletable())
-                .subscribe()
-
-        val cancelButton = RxView.clicks(cancel_button)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    removeConfirmationFragment()
-                },{
-                    Timber.e(it)
-                })
-
-        val rootButton = RxView.clicks(root)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    removeConfirmationFragment()
-                },{
-                    Timber.e(it)
-                })
-
-        compositeDisposable.addAll(confirmButton, cancelButton, rootButton)
+        confirm_button.setOnClickListener{
+            onConfirmClicked()
+            removeConfirmationFragment()
+        }
+        cancel_button.setOnClickListener{
+            removeConfirmationFragment()
+        }
+        root.setOnClickListener {
+            removeConfirmationFragment()
+        }
     }
 
-    abstract fun onConfirmCompletable(): Function<in Any?, out CompletableSource>
+    abstract fun onConfirmClicked()
 
-    protected fun removeConfirmationFragment() {
+    fun removeConfirmationFragment() {
         mainActivity!!.supportFragmentManager
                 .beginTransaction()
                 .remove(this)

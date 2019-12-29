@@ -65,4 +65,35 @@ data class Article(
                 bookmarkedDate = 0L
                 isBookmarked = false
         }
+
+        override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (javaClass != other?.javaClass) return false
+
+                other as Article
+
+                if (source != other.source) return false
+                if (author != other.author) return false
+                if (title != other.title) return false
+                if (description != other.description) return false
+                if (articleUrl != other.articleUrl) return false
+                if (publishedDate != other.publishedDate) return false
+                if (imageUrl != other.imageUrl) return false
+                if (content != other.content) return false
+                return true
+        }
+
+        override fun hashCode(): Int {
+                var result = source?.hashCode() ?: 0
+                result = 31 * result + (author?.hashCode() ?: 0)
+                result = 31 * result + title.hashCode()
+                result = 31 * result + (description?.hashCode() ?: 0)
+                result = 31 * result + (articleUrl?.hashCode() ?: 0)
+                result = 31 * result + (publishedDate?.hashCode() ?: 0)
+                result = 31 * result + (imageUrl?.hashCode() ?: 0)
+                result = 31 * result + (content?.hashCode() ?: 0)
+                return result
+        }
+
+
 }

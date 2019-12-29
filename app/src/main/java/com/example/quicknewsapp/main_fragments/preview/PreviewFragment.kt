@@ -8,7 +8,6 @@ import android.view.animation.AnimationUtils
 import androidx.room.Room
 import com.example.quicknewsapp.common.AppFragment
 import com.example.quicknewsapp.R
-import com.example.quicknewsapp.main_fragments.bookmarks.BookmarksFragment
 import com.example.quicknewsapp.main_fragments.bookmarks.BookmarkedArticlesDatabase
 import com.example.quicknewsapp.models.Article
 import com.example.quicknewsapp.common.Constants
@@ -80,10 +79,8 @@ class PreviewFragment : AppFragment() {
             article?.run {
                 if (isBookmarked) {
                     save_article_button.setImageResource(UNSELECTED_BOOKMARK_IMG)
-                    forgetArticle(this)
                 } else {
                     save_article_button.setImageResource(SELECTED_BOOKMARK_IMG)
-                    bookmarkArticle(this)
                 }
                 isBookmarked = !isBookmarked
             }
@@ -119,51 +116,6 @@ class PreviewFragment : AppFragment() {
                 .setCustomAnimations(R.anim.anim_in_bot_to_top, R.anim.anim_out_top_to_bot)
                 .remove(this)
                 .commit()
-
-        if (mainActivity!!.currFragment is BookmarksFragment) {
-            (mainActivity!!.currFragment as BookmarksFragment).loadBookmarkedArticles()
-        }
-    }
-
-    private fun bookmarkArticle(article: Article) {
-        val observable = object : Completable() {
-            override fun subscribeActual(observer: CompletableObserver) {
-                try {
-                    article.isBookmarked = true
-                    article.bookmarkedDate = DateTime.now().millis
-                    getSavedArticlesDatabase().savedArticlesDao().insert(article)
-                    observer.onComplete()
-                } catch (e: Exception) {
-                    observer.onError(e)
-                }
-            }
-        }
-        val observer = observable.observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.computation())
-                .subscribe({}, { Timber.e(it) })
-        compositeDisposable.add(observer)
-    }
-
-    private fun forgetArticle(article: Article) {
-        val observable = object : Single<Article>() {
-            override fun subscribeActual(observer: SingleObserver<in Article>) {
-                try {
-                    getSavedArticlesDatabase().savedArticlesDao().delete(article)
-                    observer.onSuccess(article)
-                } catch (e: Exception) {
-                    observer.onError(e)
-                }
-            }
-        }
-        val dis = observable.observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.computation())
-                .subscribe({
-                    it.isBookmarked = false
-                    it.bookmarkedDate = 0L
-                }, {
-                    Timber.e(it)
-                })
-        compositeDisposable.add(dis)
     }
 
     private fun getSavedArticlesDatabase(): BookmarkedArticlesDatabase {
