@@ -1,8 +1,6 @@
 package com.example.quicknewsapp.secondary_fragments
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProviders
-import com.example.quicknewsapp.BookmarkedArticlesViewModel
 import com.example.quicknewsapp.R
 import com.example.quicknewsapp.models.Article
 import io.reactivex.schedulers.Schedulers
@@ -10,11 +8,23 @@ import timber.log.Timber
 
 class BookmarkConfirmFragment : ConfirmFragment() {
 
-    override val confirmLabelStringId = R.string.confirmation_bookmark_label
+    override var confirmLabelStringId: Int = 0
+        get() {
+            return if (isArticleBookmarked) {
+                R.string.confirmation_unbookmark_label
+            } else {
+                R.string.confirmation_bookmark_label
+            }
+        }
 
-    override val confirmButtonStringId = R.string.confirmation_bookmark_button_text
-
-    lateinit var viewModel: BookmarkedArticlesViewModel
+    override var confirmButtonStringId: Int = 0
+        get() {
+            return if (isArticleBookmarked) {
+                R.string.confirmation_unbookmark_button_text
+            } else {
+                R.string.confirmation_bookmark_button_text
+            }
+        }
 
     companion object {
         fun newInstance(article: Article): ConfirmFragment {
@@ -26,19 +36,22 @@ class BookmarkConfirmFragment : ConfirmFragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(BookmarkedArticlesViewModel::class.java)
-    }
-
     override fun onConfirmClicked() {
-        val disposable = viewModel.insert(article)
-                .subscribeOn(Schedulers.computation())
+        val action =
+                if (isArticleBookmarked) {
+                    article.prepareForDelete()
+                    viewModel.delete(article)
+                } else {
+                    article.prepareForInsert()
+                    viewModel.insert(article)
+                }
+
+        val dis = action.subscribeOn(Schedulers.computation())
                 .subscribe({
                     Timber.e("onConfirmClicked()")
                 }, {
                     Timber.e(it)
                 })
-        compositeDisposable.add(disposable)
+        compositeDisposable.add(dis)
     }
 }

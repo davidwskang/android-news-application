@@ -2,29 +2,48 @@ package com.example.quicknewsapp.secondary_fragments
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.example.quicknewsapp.BookmarkedArticlesViewModel
 import com.example.quicknewsapp.R
 import com.example.quicknewsapp.common.AppFragment
 import com.example.quicknewsapp.models.Article
 import kotlinx.android.synthetic.main.fragment_confirm.*
+import timber.log.Timber
 
 abstract class ConfirmFragment : AppFragment() {
 
     override val layoutId = R.layout.fragment_confirm
 
-    abstract val confirmLabelStringId : Int
+    abstract var confirmLabelStringId: Int
 
-    abstract val confirmButtonStringId : Int
+    abstract var confirmButtonStringId: Int
 
     lateinit var article: Article
+
+    lateinit var viewModel: BookmarkedArticlesViewModel
+
+    var isArticleBookmarked = false
 
     companion object {
         const val ARTICLE_KEY = "article_key"
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        unpackBundle()
+
+        viewModel = ViewModelProviders.of(this).get(BookmarkedArticlesViewModel::class.java)
+
+        viewModel.getArticleByTitle(article.title).observe(this, Observer {
+            isArticleBookmarked = it != null
+            updateView(article)
+        })
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        unpackBundle()
-        updateView(article)
         initButtons()
     }
 
@@ -44,11 +63,11 @@ abstract class ConfirmFragment : AppFragment() {
     }
 
     private fun initButtons() {
-        confirm_button.setOnClickListener{
+        confirm_button.setOnClickListener {
             onConfirmClicked()
             removeConfirmationFragment()
         }
-        cancel_button.setOnClickListener{
+        cancel_button.setOnClickListener {
             removeConfirmationFragment()
         }
         root.setOnClickListener {
