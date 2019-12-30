@@ -10,7 +10,7 @@ androidExtensions {
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.example.quicknewsapp"
+        applicationId "com.davidwskang.quicknewsapp"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1

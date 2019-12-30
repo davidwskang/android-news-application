@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     >
 
-    <com.example.quicknewsapp.common.AppActionBar
+    <com.davidwskang.quicknewsapp.common.AppActionBar
         android:id="@+id/action_bar"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -48,7 +48,7 @@
         android:elevation="35dp"
         />
 
-    <com.example.quicknewsapp.common.BottomDrawerLayout
+    <com.davidwskang.quicknewsapp.common.BottomDrawerLayout
         android:id="@+id/bottom_drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
