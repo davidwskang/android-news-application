@@ -87,11 +87,7 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
     }
 
     private fun initRecyclerView() {
-        val imageHeight = AppUtils.convertDipToPx(context!!, 240f)
-        feedAdapter = FeedAdapter(
-                listener = this,
-                imageHeight = imageHeight,
-                imageWidth = mainActivity!!.screenWidth)
+        feedAdapter = FeedAdapter(listener = this)
         results_list.apply {
             adapter = feedAdapter
             layoutManager = object : LinearLayoutManager(context) {
