@@ -3,33 +3,40 @@ package com.davidwskang.quicknewsapp.service
 import android.app.Application
 import androidx.lifecycle.LiveData
 import com.davidwskang.quicknewsapp.model.Article
-import io.reactivex.Completable
+import com.davidwskang.quicknewsapp.model.SearchItem
 
 class Repository(application: Application) {
 
-    var bookmarkedArticleDao: BookmarkedArticlesDao
-    var bookmarkedArticles: LiveData<List<Article>>
+    private var bookmarkedArticleDao: BookmarkedArticlesDao
+    private var bookmarkedArticles: LiveData<List<Article>>
+
+    private var searchItemDao: SearchItemDao
+    private var searchItems: LiveData<List<SearchItem>>
 
     init {
-        val db = BookmarkedArticlesDatabase.getInstance(application)
+        val db = ApplicationDatabase.getInstance(application)
+
         bookmarkedArticleDao = db.bookmarkedArticlesDao()
-        bookmarkedArticles = bookmarkedArticleDao.getAllArticles()
+        bookmarkedArticles = bookmarkedArticleDao.getAll()
+
+        searchItemDao = db.searchItemDao()
+        searchItems = searchItemDao.getAll()
     }
 
-    fun insert(article: Article): Completable {
-        return bookmarkedArticleDao.insertArticle(article)
-    }
+    fun insertBookmark(article: Article) = bookmarkedArticleDao.insert(article)
 
-    fun delete(article: Article): Completable {
-        return bookmarkedArticleDao.deleteArticle(article)
-    }
+    fun deleteBookmark(article: Article) = bookmarkedArticleDao.delete(article)
 
-    fun getAll(): LiveData<List<Article>> {
-        return bookmarkedArticles
-    }
+    fun getAllBookmarks() = bookmarkedArticles
 
-    fun getArticleByTitle(title: String): LiveData<Article?> {
-        return bookmarkedArticleDao.getArticleByTitle(title);
-    }
+    fun getBookmarkByTitle(title: String) = bookmarkedArticleDao.getByTitle(title)
+
+    fun insertSearchItem(searchItem: SearchItem) = searchItemDao.insert(searchItem)
+
+    fun deleteSearchItem(searchItem: SearchItem) = searchItemDao.delete(searchItem)
+
+    fun getAllSearchItems() = searchItems
+
+    fun deleteAllSearchItems() = searchItemDao.deleteAll()
 
 }

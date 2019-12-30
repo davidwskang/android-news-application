@@ -11,17 +11,17 @@ interface BookmarkedArticlesDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertArticle(article: Article): Completable
+    fun insert(article: Article): Completable
 
     @Delete
-    fun deleteArticle(article: Article): Completable
+    fun delete(article: Article): Completable
 
     @Query("SELECT * FROM article ORDER BY bookmarkedDate DESC")
-    fun getAllArticles(): LiveData<List<Article>>
+    fun getAll(): LiveData<List<Article>>
 
     @Query("SELECT * FROM article ORDER BY bookmarkedDate DESC")
     fun getArticles(): Flowable<List<Article>>
 
     @Query("SELECT * FROM article WHERE title = :title")
-    fun getArticleByTitle(title: String): LiveData<Article?>
+    fun getByTitle(title: String): LiveData<Article?>
 }
