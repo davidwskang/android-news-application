@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     >
 
-    <com.davidwskang.quicknewsapp.secondary_fragments.settings.CountrySelectionView
+    <com.davidwskang.quicknewsapp.view.fragment.secondary_fragments.settings.CountrySelectionView
         android:id="@+id/country_flag_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
         android:layout_margin="4dp"
         />
 
-    <com.davidwskang.quicknewsapp.secondary_fragments.settings.CountrySelectionView
+    <com.davidwskang.quicknewsapp.view.fragment.secondary_fragments.settings.CountrySelectionView
         android:id="@+id/country_flag_2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         android:layout_margin="4dp"
         />
 
-    <com.davidwskang.quicknewsapp.secondary_fragments.settings.CountrySelectionView
+    <com.davidwskang.quicknewsapp.view.fragment.secondary_fragments.settings.CountrySelectionView
         android:id="@+id/country_flag_3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         android:layout_margin="4dp"
         />
 
-    <com.davidwskang.quicknewsapp.secondary_fragments.settings.CountrySelectionView
+    <com.davidwskang.quicknewsapp.view.fragment.secondary_fragments.settings.CountrySelectionView
         android:id="@+id/country_flag_4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
