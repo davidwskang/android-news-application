@@ -10,16 +10,13 @@ import com.example.quicknewsapp.util.AppUtils
 import com.jakewharton.rxbinding2.view.RxView
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.item_feed_block.view.*
 import kotlinx.android.synthetic.main.item_feed_regular.view.*
-import timber.log.Timber
 
-class FeedAdapter(var listener: OnFeedItemClickedListener,
-                  var imageHeight: Int,
-                  var imageWidth: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FeedAdapter(var listener: OnFeedItemClickedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var articles = ArrayList<Article>()
     private var bookmarkedArticles = HashSet<Article>()
+    private var itemHeightAndWidthPx = 0 // item is a square
 
     var loadingItemVisible: Boolean = true
         set(visible) {
@@ -34,6 +31,7 @@ class FeedAdapter(var listener: OnFeedItemClickedListener,
     companion object {
         private const val ITEM = 0
         private const val LOADING_ITEM = 1
+        private const val ITEM_HEIGHT_DP = 80f
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -41,7 +39,7 @@ class FeedAdapter(var listener: OnFeedItemClickedListener,
         val view: View
         return if (viewType == ITEM) {
             view = inflater.inflate(R.layout.item_feed_regular, parent, false)
-            RegularFeedViewHolder(view)
+            FeedViewHolder(view)
         } else {
             view = inflater.inflate(R.layout.item_loading, parent, false)
             LoadingViewHolder(view)
@@ -49,7 +47,7 @@ class FeedAdapter(var listener: OnFeedItemClickedListener,
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is RegularFeedViewHolder) {
+        if (holder is FeedViewHolder) {
             holder.bind(articles[position])
         }
         // loading view holder does not bind data
@@ -65,6 +63,11 @@ class FeedAdapter(var listener: OnFeedItemClickedListener,
 
     override fun getItemViewType(position: Int): Int = if (position < articles.size) ITEM else LOADING_ITEM
 
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        itemHeightAndWidthPx = AppUtils.convertDipToPx(recyclerView.context, ITEM_HEIGHT_DP)
+    }
+
     fun addArticles(newArticles: ArrayList<Article>) {
         articles.addAll(newArticles as Collection<Article>)
         notifyDataSetChanged()
@@ -76,25 +79,26 @@ class FeedAdapter(var listener: OnFeedItemClickedListener,
         notifyDataSetChanged()
     }
 
-    fun setBookmarkedArticles(bookmarked : List<Article>) {
+    fun setBookmarkedArticles(bookmarked: List<Article>) {
         bookmarkedArticles.clear()
         bookmarkedArticles.addAll(bookmarked)
         notifyDataSetChanged()
     }
 
-    internal inner class RegularFeedViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+    internal inner class FeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(article : Article) {
+        fun bind(article: Article) {
+
             itemView.run {
                 article_date.text = article.publishedDate
-                val length = AppUtils.convertDipToPx(itemView.context, 80f)
-                Picasso.get()
-                        .load(article.imageUrl)
-                        .resize(length, length)
-                        .centerCrop()
-                        .into(article_image)
                 article_source.text = article.source?.name
                 article_title.text = article.title
+
+                Picasso.get()
+                        .load(article.imageUrl)
+                        .resize(itemHeightAndWidthPx, itemHeightAndWidthPx)
+                        .centerCrop()
+                        .into(article_image)
 
                 if (bookmarkedArticles.contains(article)) {
                     bookmarked_status.setImageResource(R.drawable.ic_bookmark_black_35dp)
