@@ -188,6 +188,7 @@ abstract class FeedFragment : AppFragment(), OnFeedItemClickedListener {
                     }
                 }
             }
+            calling = false
         }
     }
 }
