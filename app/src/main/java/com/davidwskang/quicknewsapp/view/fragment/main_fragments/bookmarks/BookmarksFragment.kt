@@ -5,12 +5,12 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.davidwskang.quicknewsapp.service.BookmarkedArticlesViewModel
 import com.davidwskang.quicknewsapp.R
+import com.davidwskang.quicknewsapp.model.Article
 import com.davidwskang.quicknewsapp.model.Constants
+import com.davidwskang.quicknewsapp.service.BookmarkedArticlesViewModel
 import com.davidwskang.quicknewsapp.view.fragment.main_fragments.AppMainFragment
 import com.davidwskang.quicknewsapp.view.fragment.main_fragments.feed.FeedAdapter
-import com.davidwskang.quicknewsapp.model.Article
 import com.davidwskang.quicknewsapp.view.fragment.secondary_fragments.confirm.BookmarkConfirmFragment
 import com.davidwskang.quicknewsapp.view.fragment.secondary_fragments.confirm.OpenArticleConfirmFragment
 import kotlinx.android.synthetic.main.fragment_bookmarks.*
@@ -46,7 +46,6 @@ class BookmarksFragment : AppMainFragment(), FeedAdapter.OnFeedItemClickedListen
                     feedAdapter.setBookmarkedArticles(it)
                     updateView()
                 })
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

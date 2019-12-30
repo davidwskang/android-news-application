@@ -8,19 +8,16 @@ import io.reactivex.Completable
 @Dao
 public interface SearchItemDao {
 
-    @Query("SELECT * FROM searchItem")
+    @Query("SELECT * FROM SearchItems ORDER BY date DESC")
     fun getAll(): LiveData<List<SearchItem>>
 
-    @Query("SELECT * FROM searchItem ORDER BY date DESC")
-    fun getSearches() : List<SearchItem>?
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(searchItem : SearchItem) : Completable
+    fun insert(searchItem: SearchItem): Completable
 
     @Delete
-    fun delete(searchItem: SearchItem?) : Completable
+    fun delete(searchItem: SearchItem?): Completable
 
-    @Query("DELETE FROM searchitem")
-    fun deleteAll()
+    @Query("DELETE FROM SearchItems")
+    fun deleteAll(): Completable
 
 }

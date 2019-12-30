@@ -54,7 +54,7 @@ class SearchHistoryAdapter(var searchListener: OnRecentSearchClickedListener) : 
         }
     }
 
-    fun setRecentSearchItems(searchItems: ArrayList<SearchItem>) {
+    fun setRecentSearchItems(searchItems: List<SearchItem>) {
         searchHistory.clear()
         searchHistory.addAll(searchItems)
         notifyDataSetChanged()
@@ -67,19 +67,19 @@ class SearchHistoryAdapter(var searchListener: OnRecentSearchClickedListener) : 
 
     internal inner class RecentSearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(searchItem: SearchItem) = itemView.run {
-                recent_search_text.text = searchItem.searchTerm
-                recent_search_text.setOnClickListener {
-                    v: View? -> searchListener.onSearchItemClicked(searchItem)
-                }
-                close_button.setOnClickListener { v: View? ->
-                    searchHistory.remove(searchItem)
-                    notifyItemRemoved(adapterPosition)
+            recent_search_text.text = searchItem.searchTerm
+            recent_search_text.setOnClickListener { v: View? ->
+                searchListener.onSearchItemClicked(searchItem)
+            }
+            close_button.setOnClickListener { v: View? ->
+                searchHistory.remove(searchItem)
+                notifyItemRemoved(adapterPosition)
 
-                    searchListener.onSearchItemRemoveClicked(searchItem)
-                    if (searchHistory.isEmpty()) {
-                        notifyItemRemoved(1)
-                    }
+                searchListener.onSearchItemRemoveClicked(searchItem)
+                if (searchHistory.isEmpty()) {
+                    notifyItemRemoved(1)
                 }
+            }
         }
 
     }
@@ -94,7 +94,7 @@ class SearchHistoryAdapter(var searchListener: OnRecentSearchClickedListener) : 
 
         fun onSearchItemClicked(searchItem: SearchItem)
 
-        fun onSearchItemRemoveClicked(searchItem : SearchItem)
+        fun onSearchItemRemoveClicked(searchItem: SearchItem)
 
         fun onClearHistoryClicked()
     }

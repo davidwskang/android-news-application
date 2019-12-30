@@ -4,9 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.davidwskang.quicknewsapp.model.SearchItem
-import io.reactivex.Completable
 
-class SearchItemsViewModel (application: Application) : AndroidViewModel(application) {
+class SearchItemsViewModel(application: Application) : AndroidViewModel(application) {
 
     private var repository: Repository = Repository(application)
     private var searchItems: LiveData<List<SearchItem>>
@@ -15,16 +14,12 @@ class SearchItemsViewModel (application: Application) : AndroidViewModel(applica
         searchItems = repository.getAllSearchItems()
     }
 
-    fun insert(searchItem : SearchItem): Completable {
-        return repository.insertSearchItem(searchItem)
-    }
+    fun insert(searchItem: SearchItem) = repository.insertSearchItem(searchItem)
 
-    fun delete(searchItem : SearchItem): Completable {
-        return repository.deleteSearchItem(searchItem)
-    }
+    fun delete(searchItem: SearchItem) = repository.deleteSearchItem(searchItem)
 
-    fun getAll(): LiveData<List<SearchItem>> {
-        return searchItems
-    }
+    fun getAll() = searchItems
+
+    fun deleteAll() = repository.deleteAllSearchItems()
 
 }
