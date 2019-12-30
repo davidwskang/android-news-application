@@ -79,15 +79,15 @@ class FeedAdapter(var listener: OnFeedItemClickedListener) : RecyclerView.Adapte
         notifyDataSetChanged()
     }
 
-    fun setBookmarkedArticles(bookmarked : List<Article>) {
+    fun setBookmarkedArticles(bookmarked: List<Article>) {
         bookmarkedArticles.clear()
         bookmarkedArticles.addAll(bookmarked)
         notifyDataSetChanged()
     }
 
-    internal inner class FeedViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+    internal inner class FeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(article : Article) {
+        fun bind(article: Article) {
 
             itemView.run {
                 article_date.text = article.publishedDate
