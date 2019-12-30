@@ -11,16 +11,16 @@ import com.davidwskang.quicknewsapp.model.Converter
 
 @Database(entities = [Article::class], version = 1, exportSchema = false)
 @TypeConverters(Converter::class)
-abstract class BookmarkedArticlesDatabase : RoomDatabase() {
+abstract class ApplicationDatabase : RoomDatabase() {
 
     companion object {
-        private var instance : BookmarkedArticlesDatabase? = null
+        private var instance : ApplicationDatabase? = null
 
         @Synchronized
-        fun getInstance(context : Context) : BookmarkedArticlesDatabase {
+        fun getInstance(context : Context) : ApplicationDatabase {
             if (instance == null) {
                 instance = Room.databaseBuilder(context.applicationContext,
-                        BookmarkedArticlesDatabase::class.java,
+                        ApplicationDatabase::class.java,
                         Constants.SAVED_DB)
                         .fallbackToDestructiveMigration()
                         .build()
@@ -31,6 +31,6 @@ abstract class BookmarkedArticlesDatabase : RoomDatabase() {
 
     abstract fun bookmarkedArticlesDao() : BookmarkedArticlesDao
 
-
+    abstract fun searchItemDao() : SearchItemDao
 
 }

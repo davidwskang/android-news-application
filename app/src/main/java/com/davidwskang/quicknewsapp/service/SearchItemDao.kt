@@ -1,24 +1,26 @@
 package com.davidwskang.quicknewsapp.service
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.davidwskang.quicknewsapp.model.SearchItem
+import io.reactivex.Completable
 
 @Dao
 public interface SearchItemDao {
 
     @Query("SELECT * FROM searchItem")
-    fun getAll(): List<SearchItem>?
+    fun getAll(): LiveData<List<SearchItem>>
 
     @Query("SELECT * FROM searchItem ORDER BY date DESC")
-    fun getSearchesInOrder() : List<SearchItem>?
+    fun getSearches() : List<SearchItem>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSearch(searchItem : SearchItem)
+    fun insert(searchItem : SearchItem) : Completable
 
     @Delete
-    fun deleteSearch(searchItem: SearchItem?)
+    fun delete(searchItem: SearchItem?) : Completable
 
     @Query("DELETE FROM searchitem")
-    fun deleteAllSearches()
+    fun deleteAll()
 
 }

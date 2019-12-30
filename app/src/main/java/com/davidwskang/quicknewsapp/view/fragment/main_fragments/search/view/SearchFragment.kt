@@ -112,7 +112,7 @@ class SearchFragment : AppMainFragment(), OnRecentSearchClickedListener {
         val observable = object : Completable() {
             override fun subscribeActual(observer: CompletableObserver) {
                 try {
-                    getSearchDatabase().searchItemDao().insertSearch(searchItem)
+                    getSearchDatabase().searchItemDao().insert(searchItem)
                     observer.onComplete()
                 } catch (e : Exception) {
                     observer.onError(e)
@@ -132,7 +132,7 @@ class SearchFragment : AppMainFragment(), OnRecentSearchClickedListener {
         val observable = object : Single<ArrayList<SearchItem>>() {
             override fun subscribeActual(observer: SingleObserver<in ArrayList<SearchItem>>) {
                 try {
-                    val searchItems = getSearchDatabase().searchItemDao().getSearchesInOrder()
+                    val searchItems = getSearchDatabase().searchItemDao().getSearches()
                     if(searchItems == null) {
                         observer.onError(Exception())
                     } else {
@@ -160,7 +160,7 @@ class SearchFragment : AppMainFragment(), OnRecentSearchClickedListener {
         val observable = object : Completable() {
             override fun subscribeActual(observer: CompletableObserver) {
                 try {
-                    getSearchDatabase().searchItemDao().deleteSearch(searchItem)
+                    getSearchDatabase().searchItemDao().delete(searchItem)
                     observer.onComplete()
                 } catch (e : Exception) {
                     observer.onError(e)
@@ -179,7 +179,7 @@ class SearchFragment : AppMainFragment(), OnRecentSearchClickedListener {
         val observable = object : Completable() {
             override fun subscribeActual(observer: CompletableObserver) {
                 try {
-                    getSearchDatabase().searchItemDao().deleteAllSearches()
+                    getSearchDatabase().searchItemDao().deleteAll()
                     observer.onComplete()
                 } catch (e : Exception) {
                     observer.onError(e)

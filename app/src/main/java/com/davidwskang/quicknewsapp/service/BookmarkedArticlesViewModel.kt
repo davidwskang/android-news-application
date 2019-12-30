@@ -8,20 +8,19 @@ import io.reactivex.Completable
 
 class BookmarkedArticlesViewModel(application: Application) : AndroidViewModel(application) {
 
-    var repository: Repository
-    var bookmarkedArticles: LiveData<List<Article>>
+    private var repository: Repository = Repository(application)
+    private var bookmarkedArticles: LiveData<List<Article>>
 
     init {
-        repository = Repository(application)
-        bookmarkedArticles = repository.getAll()
+        bookmarkedArticles = repository.getAllBookmarks()
     }
 
     fun insert(article: Article): Completable {
-        return repository.insert(article)
+        return repository.insertBookmark(article)
     }
 
     fun delete(article: Article): Completable {
-        return repository.delete(article)
+        return repository.deleteBookmark(article)
     }
 
     fun getAll(): LiveData<List<Article>> {
@@ -29,7 +28,7 @@ class BookmarkedArticlesViewModel(application: Application) : AndroidViewModel(a
     }
 
     fun getArticleByTitle(title: String): LiveData<Article?> {
-        return repository.getArticleByTitle(title)
+        return repository.getBookmarkByTitle(title)
     }
 
 }

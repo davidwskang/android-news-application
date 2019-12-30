@@ -8,7 +8,7 @@ import android.view.animation.AnimationUtils
 import androidx.room.Room
 import com.davidwskang.quicknewsapp.view.fragment.AppFragment
 import com.davidwskang.quicknewsapp.R
-import com.davidwskang.quicknewsapp.service.BookmarkedArticlesDatabase
+import com.davidwskang.quicknewsapp.service.ApplicationDatabase
 import com.davidwskang.quicknewsapp.model.Article
 import com.davidwskang.quicknewsapp.model.Constants
 import com.davidwskang.quicknewsapp.util.AppUtils
@@ -110,9 +110,9 @@ class PreviewFragment : AppFragment() {
                 .commit()
     }
 
-    private fun getSavedArticlesDatabase(): BookmarkedArticlesDatabase {
+    private fun getSavedArticlesDatabase(): ApplicationDatabase {
         return Room.databaseBuilder(activity!!.applicationContext,
-                BookmarkedArticlesDatabase::class.java, Constants.SAVED_DB).build()
+                ApplicationDatabase::class.java, Constants.SAVED_DB).build()
     }
 
     inner class DismissalTouchListener() {

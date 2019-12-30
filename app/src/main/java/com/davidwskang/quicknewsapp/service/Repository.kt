@@ -3,33 +3,53 @@ package com.davidwskang.quicknewsapp.service
 import android.app.Application
 import androidx.lifecycle.LiveData
 import com.davidwskang.quicknewsapp.model.Article
+import com.davidwskang.quicknewsapp.model.SearchItem
 import io.reactivex.Completable
 
 class Repository(application: Application) {
 
-    var bookmarkedArticleDao: BookmarkedArticlesDao
-    var bookmarkedArticles: LiveData<List<Article>>
+    private var bookmarkedArticleDao: BookmarkedArticlesDao
+    private var bookmarkedArticles: LiveData<List<Article>>
+
+    private var searchItemDao: SearchItemDao
+    private var searchItems : LiveData<List<SearchItem>>
 
     init {
-        val db = BookmarkedArticlesDatabase.getInstance(application)
+        val db = ApplicationDatabase.getInstance(application)
+
         bookmarkedArticleDao = db.bookmarkedArticlesDao()
-        bookmarkedArticles = bookmarkedArticleDao.getAllArticles()
+        bookmarkedArticles = bookmarkedArticleDao.getAll()
+
+        searchItemDao = db.searchItemDao()
+        searchItems = searchItemDao.getAll()
     }
 
-    fun insert(article: Article): Completable {
-        return bookmarkedArticleDao.insertArticle(article)
+    fun insertBookmark(article: Article): Completable {
+        return bookmarkedArticleDao.insert(article)
     }
 
-    fun delete(article: Article): Completable {
-        return bookmarkedArticleDao.deleteArticle(article)
+    fun deleteBookmark(article: Article): Completable {
+        return bookmarkedArticleDao.delete(article)
     }
 
-    fun getAll(): LiveData<List<Article>> {
+    fun getAllBookmarks(): LiveData<List<Article>> {
         return bookmarkedArticles
     }
 
-    fun getArticleByTitle(title: String): LiveData<Article?> {
-        return bookmarkedArticleDao.getArticleByTitle(title);
+    fun getBookmarkByTitle(title: String): LiveData<Article?> {
+        return bookmarkedArticleDao.getByTitle(title);
+    }
+
+    fun insertSearchItem(searchItem : SearchItem) : Completable {
+        return searchItemDao.insert(searchItem)
+    }
+
+    fun deleteSearchItem(searchItem : SearchItem): Completable {
+        return searchItemDao.delete(searchItem)
+    }
+
+    fun getAllSearchItems() : LiveData<List<SearchItem>> {
+        return searchItems
     }
 
 }
