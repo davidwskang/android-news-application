@@ -102,7 +102,7 @@
 
     </ScrollView>
 
-    <com.example.quicknewsapp.common.BottomDrawerLayout
+    <com.davidwskang.quicknewsapp.view.activity.BottomDrawerLayout
         android:id="@+id/bot_nav"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
