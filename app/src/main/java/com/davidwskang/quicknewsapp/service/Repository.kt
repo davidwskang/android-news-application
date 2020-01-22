@@ -2,8 +2,10 @@ package com.davidwskang.quicknewsapp.service
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import com.davidwskang.quicknewsapp.bookmarks.BookmarkedArticlesDao
 import com.davidwskang.quicknewsapp.model.Article
-import com.davidwskang.quicknewsapp.model.SearchItem
+import com.davidwskang.quicknewsapp.search.SearchItem
+import com.davidwskang.quicknewsapp.search.SearchItemDao
 
 class Repository(application: Application) {
 
