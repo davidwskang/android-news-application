@@ -5,10 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.davidwskang.quicknewsapp.bookmarks.BookmarkedArticlesDao
 import com.davidwskang.quicknewsapp.model.Article
-import com.davidwskang.quicknewsapp.model.Constants
+import com.davidwskang.quicknewsapp.util.Constants
 import com.davidwskang.quicknewsapp.model.Converter
-import com.davidwskang.quicknewsapp.model.SearchItem
+import com.davidwskang.quicknewsapp.search.SearchItem
+import com.davidwskang.quicknewsapp.search.SearchItemDao
 
 @Database(entities = [Article::class, SearchItem::class], version = 1, exportSchema = false)
 @TypeConverters(Converter::class)

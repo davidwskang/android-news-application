@@ -1,6 +1,6 @@
 package com.davidwskang.quicknewsapp.service
 
-import com.davidwskang.quicknewsapp.model.Constants
+import com.davidwskang.quicknewsapp.util.Constants
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.Moshi
