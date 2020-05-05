@@ -12,5 +12,6 @@
 /captures
 .externalNativeBuild
 .cxx
-app/src/main/res/values/api_key.xml
-app/src/main/res/values/api_key.xml
+.idea/gradle.xml
+.idea/.name
+.idea/gradle.xml
