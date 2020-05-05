@@ -3,6 +3,9 @@
     <string name="long_text">Escambia County Sheriff David Morgan said they received the call about the active shooter at 7:51 a.m. ET. The sheriff said they are in the middle of the investigation, and cannot provide much information. However, he said, walking through the crime scene w…</string>
     <string name="empty_string"></string>
 
+    <!-- Splash Screen -->
+    <string name="application_splash_title">Quick\nNews\nApp</string>
+
     <!-- Bottom Navigation Title -->
     <string name="bottom_nav_search_title">Search</string>
     <string name="bottom_nav_headlines_title">Headlines</string>

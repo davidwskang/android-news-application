@@ -4,16 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white">
+    android:background="@color/black">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_sentiment_satisfied_black_50dp"
+    <View
+        android:id="@+id/logo_background"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/logo_background"
+        app:layout_constraintEnd_toEndOf="@id/logo_background"
+        app:layout_constraintTop_toTopOf="@id/logo_background"
+        app:layout_constraintBottom_toBottomOf="@id/logo_background"
+        android:text="@string/application_splash_title"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:lines="3"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
