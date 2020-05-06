@@ -1,6 +1,6 @@
 # Quick News App by David Kang
 
-The purpose of this application was not to simply create an app, but to and explore uses of Kotlin and RxJava.  The application itself is not very exciting, but learning a new technologies was.
+The purpose of this application was not to simply create an application, but to practice and explore uses of Kotlin and RxJava.  The application itself is not very exciting, but learning a new technologies was.
 
 The Quick News App is a mobile client for the [News API by Google](https://newsapi.org/). 
 
